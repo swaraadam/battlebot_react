@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Sidang Progress</title>
+  <script src="acorn_interpreter.js"></script>
+  <script src="https://blockly-demo.appspot.com/static/blockly_compressed.js"></script>
+  <script src="https://blockly-demo.appspot.com/static/blocks_compressed.js"></script>
+  <script src="https://blockly-demo.appspot.com/static/javascript_compressed.js"></script>
+  <script src="https://blockly-demo.appspot.com/static/msg/js/en.js"></script>
+  <script src="wait_block.js"></script>
+  <script src="movement_block.js"></script>
+  <script src="movement_stub.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <h1>________________________________ Tank-tank an ________________________________</h1>
+  <p>___________________________________________________________________________________________________________________________________________</p>
+  <p>
+    <button class="button-success pure-button" onclick="runCode()" id="runButton">Run JavaScript</button>
+    <input type="text" id="savedFile" class="filename" value="file.txt"/>
+    <button class="button-success pure-button" onclick="saveBlock(savedFile.value)" id="saveButton">Export Block</button>
+    <button class="button-success pure-button" onclick="importBlocks()">Import Blocks(XML)</button>
+    <input class="button-success pure-button" id="myfile" type="file" onchange ="importBlocksXML(this);" accept=".txt,.xml">
+  </p>
+  <div style="width: 100%">
+    <div id="blocklyDiv" style="display: inline-block; height: 480px; width: 58%"></div>
+    <div id="right" class="column column-right"></div>
+    <textarea id="output" disabled="disabled" style="display: inline-block; height: 480px; width: 38%;">
+    </textarea>
+  </div>
+
+  <xml id="toolbox" style="display: none">
+    <category name="tank" colour="#a55b6d">
+      <block type="move_right"></block>
+      <block type="move_left"></block>
+      <!-- <block type="turret_rotate_left"></block>
+      <block type="turret_rotate_right"></block> -->
+      <block type="forward"></block>
+      
+    </category>
+    <category name="Logic" colour="#5C81A6">
+      <block type="controls_if"></block>
+      <block type="logic_compare">
+        <field name="OP">EQ</field>
+      </block>
+      <block type="logic_operation">
+        <field name="OP">AND</field>
+      </block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean">
+        <field name="BOOL">TRUE</field>
+      </block>
+      <block type="logic_null"></block>
+      <!-- <block type="logic_ternary"></block> -->
+    </category>
+    <category name="Loops" colour="#5CA65C">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_whileUntil">
+        <field name="MODE">WHILE</field>
+      </block>
+      <block type="controls_for">
+        <field name="VAR" id="/F,^)I;.t]:{vNvb9c*U" variabletype="">i</field>
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+        <value name="BY">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <!-- <block type="controls_forEach">
+        <field name="VAR" id="eo9sI88J)_gt[]3.{$ke" variabletype="">j</field>
+      </block> -->
+      <block type="controls_flow_statements">
+        <field name="FLOW">BREAK</field>
+      </block>
+    </category>
+    <category name="Math" colour="#5C68A6">
+      <block type="math_round">
+        <field name="OP">ROUND</field>
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">3.1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_number">
+        <field name="NUM">0</field>
+      </block>
+      <block type="math_single">
+        <field name="OP">ROOT</field>
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">9</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_trig">
+        <field name="OP">SIN</field>
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">45</field>
+          </shadow>
+        </value>
+      </block>
+      <!-- <block type="math_constant">
+        <field name="CONSTANT">PI</field>
+      </block> -->
+      <block type="math_number_property">
+        <mutation divisor_input="false"></mutation>
+        <field name="PROPERTY">EVEN</field>
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_arithmetic">
+        <field name="OP">ADD</field>
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <!-- <block type="math_on_list">
+        <mutation op="SUM"></mutation>
+        <field name="OP">SUM</field>
+      </block> -->
+      <!-- <block type="math_modulo">
+        <value name="DIVIDEND">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="DIVISOR">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block> -->
+      <!-- <block type="math_constrain">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="LOW">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="HIGH">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block> -->
+      <block type="math_random_int">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <!-- <block type="math_random_float"></block> -->
+    </category>
+    <!-- <category name="Text" colour="#5CA68D">
+      <block type="text_charAt">
+        <mutation at="true"></mutation>
+        <field name="WHERE">FROM_START</field>
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR" id="RQSLzx/(1)Hts?pS(m)W" variabletype="">text</field>
+          </block>
+        </value>
+      </block>
+      <block type="text">
+        <field name="TEXT"></field>
+      </block>
+      <block type="text_append">
+        <field name="VAR" id="9xRN2huoHD$=aKibJZAZ" variabletype="">item</field>
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_length">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_isEmpty">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_indexOf">
+        <field name="END">FIRST</field>
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR" id="RQSLzx/(1)Hts?pS(m)W" variabletype="">text</field>
+          </block>
+        </value>
+        <value name="FIND">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="display_text"></block>
+      <block type="text_join">
+        <mutation items="2"></mutation>
+      </block>
+      <block type="text_getSubstring">
+        <mutation at1="true" at2="true"></mutation>
+        <field name="WHERE1">FROM_START</field>
+        <field name="WHERE2">FROM_START</field>
+        <value name="STRING">
+          <block type="variables_get">
+            <field name="VAR" id="RQSLzx/(1)Hts?pS(m)W" variabletype="">text</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_changeCase">
+        <field name="CASE">UPPERCASE</field>
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_trim">
+        <field name="MODE">BOTH</field>
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_prompt_ext">
+        <mutation type="TEXT"></mutation>
+        <field name="TYPE">TEXT</field>
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+    </category> -->
+
+    <sep></sep>
+    <category name="Variables" colour="#A65C81" custom="VARIABLE"></category>
+    <category name="Functions" colour="#9A5CA6" custom="PROCEDURE"></category>
+  </xml>
+
+  
+  <xml id="startBlocks" style="display: none">
+    
+  </xml>
+
+  <script>
+    var tankAIWorkspace = Blockly.inject('blocklyDiv',
+      {
+        media: 'https://blockly-demo.appspot.com/static/media/',
+        toolbox: document.getElementById('toolbox')
+      });
+    Blockly.Xml.domToWorkspace(document.getElementById('startBlocks'),
+      tankAIWorkspace);
+    // Exit is used to signal the end of a script.
+    Blockly.JavaScript.addReservedWords('exit');
+
+    var outputArea = document.getElementById('output');
+    var runButton = document.getElementById('runButton');
+    var myInterpreter = null;
+    var runner;
+
+    function initApi(interpreter, scope) {
+      // Add an API function for the alert() block, generated for "text_print" blocks.
+      var wrapper = function (text) {
+        text = text ? text.toString() : '';
+        outputArea.value = outputArea.value + '\n' + text;
+      };
+      interpreter.setProperty(scope, 'alert',
+        interpreter.createNativeFunction(wrapper));
+
+
+      // Add an API function for the prompt() block.
+      var wrapper = function (text) {
+        text = text ? text.toString() : '';
+        return interpreter.createPrimitive(1);
+      };
+      interpreter.setProperty(scope, 'prompt',
+        interpreter.createNativeFunction(wrapper));
+      
+      // Add an API function for the jump() block.
+      var wrapper = function (text) {
+        text = text ? text.toString() : '';
+        //return interpreter.createPrimitive(prompt(text));
+      };
+
+      interpreter.setProperty(scope, 'jump',
+        interpreter.createNativeFunction(wrapper));
+
+      // Add all the custom block api calls here
+      initInterpreterWaitForSeconds(interpreter, scope);
+      initInterpreterGoRight(interpreter, scope);
+      initInterpreterGoLeft(interpreter, scope);
+      initInterpreterDisplayText(interpreter, scope);
+      // Add an API function for highlighting blocks.
+      var wrapper = function (id) {
+        id = id ? id.toString() : '';
+        return interpreter.createPrimitive(highlightBlock(id));
+      };
+      interpreter.setProperty(scope, 'highlightBlock',
+        interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function (id) {
+        id = id ? id.toString() : '';
+        return goRightX(id);
+        //return interpreter.createPrimitive(highlightBlock(id));
+      };
+      interpreter.setProperty(scope, 'bb',
+        interpreter.createNativeFunction(wrapper));
+    }
+
+    var highlightPause = false;
+    var latestCode = '';
+
+    function highlightBlock(id) {
+      tankAIWorkspace.highlightBlock(id);
+      highlightPause = true;
+    }
+
+    function resetStepUi(clearOutput) {
+      tankAIWorkspace.highlightBlock(null);
+      highlightPause = false;
+      runButton.disabled = '';
+
+      if (clearOutput) {
+        outputArea.value = 'Program output:\n=================';
+      }
+    }
+
+    function generateCodeAndLoadIntoInterpreter() {
+      // Generate JavaScript code and parse it.
+      Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
+      Blockly.JavaScript.addReservedWords('highlightBlock');
+      latestCode = Blockly.JavaScript.workspaceToCode(tankAIWorkspace);
+
+      resetStepUi(true);
+    }
+
+    function resetInterpreter() {
+      myInterpreter = null;
+      if (runner) {
+        clearTimeout(runner);
+        runner = null;
+      }
+    }
+
+    function speak(){
+      displayText.setText('Score: ' );
+    }
+
+    function runCode() {
+      if (!myInterpreter) {
+        // First statement of this code.
+        // Clear the program output.
+        resetStepUi(true);
+        runButton.disabled = 'disabled';
+
+        // And then show generated code in an alert.
+        // In a timeout to allow the outputArea.value to reset first.
+        setTimeout(function () {
+
+
+          // Begin execution
+          highlightPause = false;
+          myInterpreter = new Interpreter(latestCode, initApi);
+          runner = function () {
+            if (myInterpreter) {
+              var hasMore = myInterpreter.run();
+              if (hasMore) {
+                // Execution is currently blocked by some async call.
+                // Try again later.
+                setTimeout(runner, 10);
+              } else {
+                // Program is complete.
+                outputArea.value += '\n\n<< Program complete >>';
+                resetInterpreter();
+                resetStepUi(false);
+              }
+            }
+          };
+          runner();
+        }, 1);
+        return;
+      }
+    }
+
+    //create block saver
+    var xml_text = null
+    function saveBlock(filename){
+      try{
+        var xml = Blockly.Xml.workspaceToDom(tankAIWorkspace)
+        xml_text = Blockly.Xml.domToText(xml)
+
+        var link = document.createElement('a')
+        link.download = filename
+        link.href = "data:application/octet-stream;utf-8," + encodeURI(xml_text)
+        document.body.appendChild(link)
+        link.click()
+        link.remove()
+        console.log("save success")
+      }catch(e){
+        console.log(e)
+        window.location.href = "data:application/octet-stream;utf-8," + encodeURI(xml_text)
+        alert(e)
+      }
+    }
+
+    function importBlocks(){
+      try{
+        var xml_text = prompt("Please enter XML code","")
+        var xml = Blockly.Xml.textToDom(xml_text)
+        tankAIWorkspace.clear()
+        Blockly.Xml.domToWorkspace(xml,tankAIWorkspace)
+      }catch(e){
+        alert(e)
+      }
+    }
+    function importBlocksXML(element){
+      try{
+        var file = element.files[0]
+        var fr = new FileReader()
+        fr.onload = function(event){
+          var xml = Blockly.Xml.textToDom(event.target.result)
+          tankAIWorkspace.clear()
+          Blockly.Xml.domToWorkspace(xml,tankAIWorkspace)
+        }
+        fr.readAsText(file)
+      }catch(e){
+        console.log(e)
+        alert(e)
+      }
+    }
+    
+    // Load the interpreter now, and upon future changes.
+    generateCodeAndLoadIntoInterpreter();
+    tankAIWorkspace.addChangeListener(function (event) {
+      if (!(event instanceof Blockly.Events.Ui)) {
+        // Something changed. Parser needs to be reloaded.
+        resetInterpreter();
+        generateCodeAndLoadIntoInterpreter();
+      }
+    });
+  </script>
+
+  <script src = "game.js">//Load game..................</script>
+</body>
+</html>
