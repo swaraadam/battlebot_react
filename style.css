@@ -12,11 +12,11 @@ body {
   float: left;
   width: 25%;
   padding: 10px;
-  height: 300px; /* Should be removed. Only for demonstration */
+ /* Should be removed. Only for demonstration */
   }
 
   .column-right {
-      width: 400px;
+      width: 1000px;
       padding: 0px;
       float: right;
   }

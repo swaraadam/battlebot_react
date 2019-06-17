@@ -13,19 +13,19 @@ function initInterpreterGoRight(interpreter, scope) {
   Blockly.JavaScript.addReservedWords('goRightBlock');
   var wrapper = interpreter.createAsyncFunction(
     function(x, callback) {
-      goToTheRight = true;
-      goForward = x;
-      if (goForward == true){
+      p1_rotateTankRight = true;
+      p1_forward = x;
+      if (p1_forward == true){
         setTimeout(function(){ 
-          goForward = false;  // kill the upward motion first
+          p1_forward = false;  // kill the upward motion first
           setTimeout(function(){ 
             // next stop moving to the right
-            goToTheRight = false; 
+            p1_rotateTankRight = false; 
             callback(); },  100);
         },300);
       }
       else {
-        setTimeout(function(){ goToTheRight = false; callback(); },900);
+        setTimeout(function(){ p1_rotateTankRight = false; callback(); },900);
       }
 
     });
@@ -44,18 +44,18 @@ function initInterpreterGoLeft(interpreter, scope) {
   Blockly.JavaScript.addReservedWords('goLeftBlock');
   var wrapper = interpreter.createAsyncFunction(
     function(x, callback) {
-      goToTheLeft = true;
-      goForward = x;
-      if (goForward == true){
+      p1_rotateTankLeft = true;
+      p1_forward = x;
+      if (p1_forward == true){
         setTimeout(function(){ 
-          goForward = false; 
+          p1_forward = false; 
           setTimeout(function(){ 
-            goToTheLeft = false; 
+            p1_rotateTankLeft = false; 
             callback(); },  100);
         },300);
       }
       else {
-        setTimeout(function(){ goToTheLeft = false; callback(); },900);
+        setTimeout(function(){ p1_rotateTankLeft = false; callback(); },900);
       }
 
     });

@@ -1,0 +1,27 @@
+{
+  "name": "battlebot_react",
+  "version": "1.0.0",
+  "description": "\"reactJS, Phaser, Blockly for Battlebot\"",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/swaraadam/battlebot_react.git"
+  },
+  "author": "Bimaswara Adam",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/swaraadam/battlebot_react/issues"
+  },
+  "homepage": "https://github.com/swaraadam/battlebot_react#readme",
+  "dependencies": {
+    "phaser": "^3.17.0"
+  },
+  "devDependencies": {
+    "webpack": "^4.34.0",
+    "webpack-cli": "^3.3.4",
+    "webpack-dev-server": "^3.7.1"
+  }
+}
