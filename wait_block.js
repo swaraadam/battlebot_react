@@ -64,3 +64,8 @@ function initInterpreterWaitForSeconds(interpreter, scope) {
     });
   interpreter.setProperty(scope, 'waitForSeconds', wrapper);
 }
+
+function Battle(){
+  runCodeP1()
+  runCodeP2()
+}

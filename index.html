@@ -1,65 +1,130 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-  <meta charset="utf-8">
-  <title>Sidang Progress</title>
-  <script src="acorn_interpreter.js"></script>
-  <script src="https://blockly-demo.appspot.com/static/blockly_compressed.js"></script>
-  <script src="https://blockly-demo.appspot.com/static/blocks_compressed.js"></script>
-  <script src="https://blockly-demo.appspot.com/static/javascript_compressed.js"></script>
-  <script src="https://blockly-demo.appspot.com/static/msg/js/en.js"></script>
-  <script src="wait_block.js"></script>
-  <script src="movement_block.js"></script>
-  <script src="movement_stub.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css" integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w"
-    crossorigin="anonymous">
-  <link rel="stylesheet" href="style.css" />
+<meta charset="utf-8">
+<title>Multi-toolbox Playground</title>
+<script src="acorn_interpreter.js"></script>
+<script src="https://blockly-demo.appspot.com/static/blockly_compressed.js"></script>
+<script src="https://blockly-demo.appspot.com/static/blocks_compressed.js"></script>
+<script src="https://blockly-demo.appspot.com/static/javascript_compressed.js"></script>
+<script src="https://blockly-demo.appspot.com/static/msg/js/en.js"></script>
+<script src="wait_block.js"></script>
+<script src="p1_block.js"></script>
+<script src="p2_block.js"></script>
+<script src="p2_stub.js"></script>
+<script src="p1_stub.js"></script>
+<script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+
+<style>
+html, body {
+  height: 100%;
+}
+body {
+  background-color: #fff;
+  font-family: sans-serif;
+}
+h1 {
+  font-weight: normal;
+  font-size: 140%;
+}
+#octaweb {
+  width: 100%;
+}
+#octaweb th {
+  padding-top: 0em;
+  width: 50%;
+}
+#octaweb td {
+  width: 50%;
+}
+#octaweb td >div {
+  height: 480px;
+  /* width: 100%; */
+}
+#phaser-game{
+  width: 600px;
+  height: 480px;
+  margin: 0 auto;
+  border: 10px solid black;
+}
+</style>
 </head>
-
 <body>
-  <h1>________________________________ Tank-tank an ________________________________</h1>
-  <p>___________________________________________________________________________________________________________________________________________</p>
-  <p>
-    <button class="button-success pure-button" onclick="runCode()" id="runButton">Run JavaScript</button>
-    <input type="text" id="savedFile" class="filename" value="file.txt"/>
-    <button class="button-success pure-button" onclick="saveBlock(savedFile.value)" id="saveButton">Export Block</button>
-    <button class="button-success pure-button" onclick="importBlocks()">Import Blocks(XML)</button>
-    <input class="button-success pure-button" id="myfile" type="file" onchange ="importBlocksXML(this);" accept=".txt,.xml">
-  </p>
-  <div style="width: 100%">
-    <div id="blocklyDiv" style="display: inline-block; height: 480px; width: 58%"></div>
-    <div id="right" class="column column-right"></div>
-    <textarea id="output" disabled="disabled" style="display: inline-block; height: 480px; width: 38%;">
-    </textarea>
-  </div>
+  <table id="octaweb">
+    <tr>
+        <th colspan="2">BATTLEBOT</th>
+    </tr>
+    <tr>
+      <th>
+          <p>
+              <button class="button-success pure-button" onclick="runCodeP1()" id="runButtonP1">Run Player One</button>
+              <input type="text" id="savedFile" class="filename" value="file.txt"/>
+              <button class="button-success pure-button" onclick="saveBlockP1(savedFile.value)" id="saveButtonP1">Export Block</button>
+              <button class="button-success pure-button" onclick="importBlocksP1()">Import Blocks(XML)</button>
+              <input class="button-success pure-button" id="myfile" type="file" onchange ="importBlocksXMLP1(this);" accept=".txt,.xml">
+            </p>
+      </th>
+      <th>
+          <p>
+              <button class="button-success pure-button" onclick="runCodeP2()" id="runButtonP2">Run Player Two</button>
+              <input type="text" id="savedFile" class="filename" value="file.txt"/>
+              <button class="button-success pure-button" onclick="saveBlockP2(savedFile.value)" id="saveButtonP2">Export Block</button>
+              <button class="button-success pure-button" onclick="importBlocksP2()">Import Blocks(XML)</button>
+              <input class="button-success pure-button" id="myfile" type="file" onchange ="importBlocksXMLP2(this);" accept=".txt,.xml">
+            </p>
+      </th>
+    </tr>
+    <tr>
+      <td colspan="2"><div id="phaser-game"></div>
+        <p>
+          <button class="button-success pure-button" onclick="Battle()" id="Battle" style="display: inline-block; height: 40px; width: 100%;">Battle!</button>
+        </p>
+      </td>
+    </tr>
+    <tr>
+      <th>Player 1</th>
+      <th>Player 2</th>
+    </tr>
+    <tr>
+      <td><div id="workspacePlayerOne"></div></td>
+      <td><div id="workspacePlayerTwo"></div></td>
+    </tr>
+    <tr>
+        <td>   
+          <textarea id="outputP1" disabled="disabled" style="display: inline-block; height: 120px; width: 100%;">
+          </textarea>
+        </td>
+        <td>
+          <textarea id="outputP2" disabled="disabled" style="display: inline-block; height: 120px; width: 100%;">
+          </textarea>
+        </td>
+      </tr>
+  </table>
 
-  <xml id="toolbox" style="display: none">
-    <category name="tank" colour="#a55b6d">
-      <block type="move_right"></block>
-      <block type="move_left"></block>
-      <!-- <block type="turret_rotate_left"></block>
-      <block type="turret_rotate_right"></block> -->
-      <block type="forward"></block>
-      
+  <xml id="toolbox-p1" style="display: none">
+    <category name="Tank Attribute" colour="#ffe500">
+      <block type="rotate_tank_p1"></block>
+      <!-- <block type="rotate_tank_to_left"></block>
+      <block type="rotate_tank_to_right"></block> -->
+      <block type="rotate_turret_p1"></block>
+      <!-- <block type="rotate_turret_to_left"></block>
+      <block type="rotate_turret_to_right"></block> -->
+      <block type="move_forward_p1"></block>
+      <block type="move_backward_p1"></block>
+      <block type="move_opposide_p1"></block>
+      <block type="shoot_p1"></block>
+      <block type="yell_p1"></block>
     </category>
-    <category name="Logic" colour="#5C81A6">
+    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
-      <block type="logic_compare">
-        <field name="OP">EQ</field>
-      </block>
-      <block type="logic_operation">
-        <field name="OP">AND</field>
-      </block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
       <block type="logic_negate"></block>
-      <block type="logic_boolean">
-        <field name="BOOL">TRUE</field>
-      </block>
-      <block type="logic_null"></block>
-      <!-- <block type="logic_ternary"></block> -->
+      <block type="logic_boolean"></block>
+      <block type="logic_null" disabled="true"></block>
+      <block type="logic_ternary"></block>
     </category>
-    <category name="Loops" colour="#5CA65C">
+    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
       <block type="controls_repeat_ext">
         <value name="TIMES">
           <shadow type="math_number">
@@ -67,11 +132,9 @@
           </shadow>
         </value>
       </block>
-      <block type="controls_whileUntil">
-        <field name="MODE">WHILE</field>
-      </block>
+      <block type="controls_repeat" disabled="true"></block>
+      <block type="controls_whileUntil"></block>
       <block type="controls_for">
-        <field name="VAR" id="/F,^)I;.t]:{vNvb9c*U" variabletype="">i</field>
         <value name="FROM">
           <shadow type="math_number">
             <field name="NUM">1</field>
@@ -88,55 +151,14 @@
           </shadow>
         </value>
       </block>
-      <!-- <block type="controls_forEach">
-        <field name="VAR" id="eo9sI88J)_gt[]3.{$ke" variabletype="">j</field>
-      </block> -->
-      <block type="controls_flow_statements">
-        <field name="FLOW">BREAK</field>
-      </block>
+      <block type="controls_forEach"></block>
+      <block type="controls_flow_statements"></block>
     </category>
-    <category name="Math" colour="#5C68A6">
-      <block type="math_round">
-        <field name="OP">ROUND</field>
-        <value name="NUM">
-          <shadow type="math_number">
-            <field name="NUM">3.1</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_number">
-        <field name="NUM">0</field>
-      </block>
-      <block type="math_single">
-        <field name="OP">ROOT</field>
-        <value name="NUM">
-          <shadow type="math_number">
-            <field name="NUM">9</field>
-          </shadow>
-        </value>
-      </block>
-      <block type="math_trig">
-        <field name="OP">SIN</field>
-        <value name="NUM">
-          <shadow type="math_number">
-            <field name="NUM">45</field>
-          </shadow>
-        </value>
-      </block>
-      <!-- <block type="math_constant">
-        <field name="CONSTANT">PI</field>
-      </block> -->
-      <block type="math_number_property">
-        <mutation divisor_input="false"></mutation>
-        <field name="PROPERTY">EVEN</field>
-        <value name="NUMBER_TO_CHECK">
-          <shadow type="math_number">
-            <field name="NUM">0</field>
-          </shadow>
-        </value>
+    <category name="Math" colour="%{BKY_MATH_HUE}">
+      <block type="math_number" gap="32">
+        <field name="NUM">123</field>
       </block>
       <block type="math_arithmetic">
-        <field name="OP">ADD</field>
         <value name="A">
           <shadow type="math_number">
             <field name="NUM">1</field>
@@ -148,11 +170,37 @@
           </shadow>
         </value>
       </block>
-      <!-- <block type="math_on_list">
-        <mutation op="SUM"></mutation>
-        <field name="OP">SUM</field>
-      </block> -->
-      <!-- <block type="math_modulo">
+      <block type="math_single">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">9</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_trig">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">45</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constant"></block>
+      <block type="math_number_property">
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_round">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">3.1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_on_list"></block>
+      <block type="math_modulo">
         <value name="DIVIDEND">
           <shadow type="math_number">
             <field name="NUM">64</field>
@@ -163,8 +211,8 @@
             <field name="NUM">10</field>
           </shadow>
         </value>
-      </block> -->
-      <!-- <block type="math_constrain">
+      </block>
+      <block type="math_constrain">
         <value name="VALUE">
           <shadow type="math_number">
             <field name="NUM">50</field>
@@ -180,7 +228,7 @@
             <field name="NUM">100</field>
           </shadow>
         </value>
-      </block> -->
+      </block>
       <block type="math_random_int">
         <value name="FROM">
           <shadow type="math_number">
@@ -193,27 +241,26 @@
           </shadow>
         </value>
       </block>
-      <!-- <block type="math_random_float"></block> -->
-    </category>
-    <!-- <category name="Text" colour="#5CA68D">
-      <block type="text_charAt">
-        <mutation at="true"></mutation>
-        <field name="WHERE">FROM_START</field>
-        <value name="VALUE">
-          <block type="variables_get">
-            <field name="VAR" id="RQSLzx/(1)Hts?pS(m)W" variabletype="">text</field>
-          </block>
+      <block type="math_random_float"></block>
+      <block type="math_atan2">
+        <value name="X">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="Y">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
         </value>
       </block>
-      <block type="text">
-        <field name="TEXT"></field>
-      </block>
+    </category>
+    <category name="Text" colour="%{BKY_TEXTS_HUE}">
+      <block type="text"></block>
+      <block type="text_join"></block>
       <block type="text_append">
-        <field name="VAR" id="9xRN2huoHD$=aKibJZAZ" variabletype="">item</field>
         <value name="TEXT">
-          <shadow type="text">
-            <field name="TEXT"></field>
-          </shadow>
+          <shadow type="text"></shadow>
         </value>
       </block>
       <block type="text_length">
@@ -231,10 +278,9 @@
         </value>
       </block>
       <block type="text_indexOf">
-        <field name="END">FIRST</field>
         <value name="VALUE">
           <block type="variables_get">
-            <field name="VAR" id="RQSLzx/(1)Hts?pS(m)W" variabletype="">text</field>
+            <field name="VAR">text</field>
           </block>
         </value>
         <value name="FIND">
@@ -243,22 +289,21 @@
           </shadow>
         </value>
       </block>
-      <block type="display_text"></block>
-      <block type="text_join">
-        <mutation items="2"></mutation>
+      <block type="text_charAt">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">text</field>
+          </block>
+        </value>
       </block>
       <block type="text_getSubstring">
-        <mutation at1="true" at2="true"></mutation>
-        <field name="WHERE1">FROM_START</field>
-        <field name="WHERE2">FROM_START</field>
         <value name="STRING">
           <block type="variables_get">
-            <field name="VAR" id="RQSLzx/(1)Hts?pS(m)W" variabletype="">text</field>
+            <field name="VAR">text</field>
           </block>
         </value>
       </block>
       <block type="text_changeCase">
-        <field name="CASE">UPPERCASE</field>
         <value name="TEXT">
           <shadow type="text">
             <field name="TEXT">abc</field>
@@ -266,7 +311,6 @@
         </value>
       </block>
       <block type="text_trim">
-        <field name="MODE">BOTH</field>
         <value name="TEXT">
           <shadow type="text">
             <field name="TEXT">abc</field>
@@ -281,28 +325,435 @@
         </value>
       </block>
       <block type="text_prompt_ext">
-        <mutation type="TEXT"></mutation>
-        <field name="TYPE">TEXT</field>
         <value name="TEXT">
           <shadow type="text">
             <field name="TEXT">abc</field>
           </shadow>
         </value>
       </block>
-    </category> -->
-
+    </category>
+    <category name="Lists" colour="%{BKY_LISTS_HUE}">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getIndex">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_setIndex">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getSublist">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_split">
+        <value name="DELIM">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_sort"></block>
+    </category>
+    <category name="Colour" colour="%{BKY_COLOUR_HUE}">
+      <block type="colour_picker"></block>
+      <block type="colour_random"></block>
+      <block type="colour_rgb">
+        <value name="RED">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="GREEN">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="BLUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="colour_blend">
+        <value name="COLOUR1">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#ff0000</field>
+          </shadow>
+        </value>
+        <value name="COLOUR2">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#3333ff</field>
+          </shadow>
+        </value>
+        <value name="RATIO">
+          <shadow type="math_number">
+            <field name="NUM">0.5</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
     <sep></sep>
-    <category name="Variables" colour="#A65C81" custom="VARIABLE"></category>
-    <category name="Functions" colour="#9A5CA6" custom="PROCEDURE"></category>
+    <category name="Variables" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
+    <category name="Functions" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
   </xml>
 
-  
-  <xml id="startBlocks" style="display: none">
-    
+  <xml id="toolbox-p2" style="display: none">
+    <category name="Tank Attribute" colour="#ffe500">
+      <block type="rotate_tank_p2"></block>
+      <!-- <block type="rotate_tank_to_left"></block>
+      <block type="rotate_tank_to_right"></block> -->
+      <block type="rotate_turret_p2"></block>
+      <!-- <block type="rotate_turret_to_left"></block>
+      <block type="rotate_turret_to_right"></block> -->
+      <block type="move_forward_p2"></block>
+      <block type="move_backward_p2"></block>
+      <block type="move_opposide_p2"></block>
+      <block type="shoot_p2"></block>
+      <block type="yell_p2"></block>
+    </category>
+    <category name="Logic" colour="%{BKY_LOGIC_HUE}">
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+      <block type="logic_null" disabled="true"></block>
+      <block type="logic_ternary"></block>
+    </category>
+    <category name="Loops" colour="%{BKY_LOOPS_HUE}">
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_repeat" disabled="true"></block>
+      <block type="controls_whileUntil"></block>
+      <block type="controls_for">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+        <value name="BY">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_forEach"></block>
+      <block type="controls_flow_statements"></block>
+    </category>
+    <category name="Math" colour="%{BKY_MATH_HUE}">
+      <block type="math_number" gap="32">
+        <field name="NUM">123</field>
+      </block>
+      <block type="math_arithmetic">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_single">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">9</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_trig">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">45</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constant"></block>
+      <block type="math_number_property">
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_round">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">3.1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_on_list"></block>
+      <block type="math_modulo">
+        <value name="DIVIDEND">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="DIVISOR">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constrain">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="LOW">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="HIGH">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_int">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_float"></block>
+      <block type="math_atan2">
+        <value name="X">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="Y">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="Text" colour="%{BKY_TEXTS_HUE}">
+      <block type="text"></block>
+      <block type="text_join"></block>
+      <block type="text_append">
+        <value name="TEXT">
+          <shadow type="text"></shadow>
+        </value>
+      </block>
+      <block type="text_length">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_isEmpty">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">text</field>
+          </block>
+        </value>
+        <value name="FIND">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_charAt">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">text</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_getSubstring">
+        <value name="STRING">
+          <block type="variables_get">
+            <field name="VAR">text</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_changeCase">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_trim">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_prompt_ext">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="Lists" colour="%{BKY_LISTS_HUE}">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getIndex">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_setIndex">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getSublist">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">list</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_split">
+        <value name="DELIM">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_sort"></block>
+    </category>
+    <category name="Colour" colour="%{BKY_COLOUR_HUE}">
+      <block type="colour_picker"></block>
+      <block type="colour_random"></block>
+      <block type="colour_rgb">
+        <value name="RED">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="GREEN">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="BLUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="colour_blend">
+        <value name="COLOUR1">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#ff0000</field>
+          </shadow>
+        </value>
+        <value name="COLOUR2">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#3333ff</field>
+          </shadow>
+        </value>
+        <value name="RATIO">
+          <shadow type="math_number">
+            <field name="NUM">0.5</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <sep></sep>
+    <category name="Variables" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
+    <category name="Functions" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
   </xml>
 
-  <script type="text/javascript" src="tankAI.js"> //Load Interpreter</script>
-  
-  <script type="text/javascript" src="game.js"> //Load Game </script>
+
+  <script type="text/javascript" src="playerOneInterpreter.js">//Load Workspace Interpreter  </script>
+  <script type="text/javascript" src="playerTwoInterpreter.js">//Load Workspace Interpreter  </script>
+  <script src="game.js">//Load Game</script>
 </body>
 </html>

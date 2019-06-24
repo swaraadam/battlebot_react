@@ -1,10 +1,11 @@
 var game
 
 window.onload = function(){
+    // start() //load blockly component
     var config = {
         type : Phaser.AUTO,
-        width: 800,
-        height : 600,
+        width: 600,
+        height : 480,
         backgroundColor : 0xeaf0f1,
         parent : "phaser-game",
         physics : {
@@ -53,12 +54,15 @@ class Bullet extends Phaser.GameObjects.Image{
     }
 }
 
+var p1_rotate_tank = false;
 var p1_rotateTankLeft = false;
 var p1_rotateTankRight = false;
 var p1_rotateTurretLeft = false;
 var p1_rotateTurretRight = false;
 var p1_forward = false;
 var p1_backward = false;
+var p1_shoot = false;
+var p1_displayText
 
 class Player1 extends Phaser.GameObjects.Image{
     constructor(props){
@@ -71,6 +75,7 @@ class Player1 extends Phaser.GameObjects.Image{
         //child
         this.barrel = Phaser.GameObjects.Image
         this.lifeBar = Phaser.GameObjects.Graphics
+        this.yell = Phaser.GameObjects.text
         //game object
         this.bullets = Phaser.GameObjects.Group
         //input - edit this type later for bot
@@ -84,7 +89,6 @@ class Player1 extends Phaser.GameObjects.Image{
         this.tankBackward = Phaser.Input.Keyboard.Key
 
         this.getBullets()
-
         this.initImage()
         this.scene.add.existing(this)
     }
@@ -112,6 +116,9 @@ class Player1 extends Phaser.GameObjects.Image{
 
         this.lifeBar = this.scene.add.graphics()
         this.redrawLifebar()
+
+        this.yell = this.scene.add.text(this.x, this.y, '', { fontSize: '12px', fill: '#000' })
+        this.yell.setOrigin(-0.5, 3.2)
 
         //game objects
         this.bullets=this.scene.add.group({
@@ -154,12 +161,15 @@ class Player1 extends Phaser.GameObjects.Image{
           this.barrel.y = this.y
           this.lifeBar.x = this.x
           this.lifeBar.y = this.y
+          this.yell.x = this.x
+          this.yell.y = this.y
           this.handleInput()
           this.handleShooting()  
         }else{
             this.destroy()
             this.barrel.destroy()
             this.lifeBar.destroy()
+            this.yell.destroy()
         }
     }
 
@@ -182,20 +192,20 @@ class Player1 extends Phaser.GameObjects.Image{
         }
         //Rotate tank
         if(this.rotateTankLeft.isDown || p1_rotateTankLeft){
-            this.rotation -= 0.02
+            this.angle -= 1
         }else if(this.rotateTankRight.isDown || p1_rotateTankRight){
-            this.rotation += 0.02
+            this.angle += 1
         }
         //Rotate barrel
         if(this.rotateTurretLeft.isDown || p1_rotateTurretLeft){
-            this.barrel.rotation -= 0.05
+            this.barrel.angle -= 1
         }else if(this.rotateTurretRight.isDown || p1_rotateTurretRight){
-            this.barrel.rotation += 0.05
+            this.barrel.angle += 1
         }
     }
 
     handleShooting(){
-        if(this.shootingKey.isDown && this.scene.time.now > this.lastShoot){
+        if((p1_shoot || this.shootingKey.isDown ) && this.scene.time.now > this.lastShoot){
             this.scene.cameras.main.shake(20, 0.005)
             this.scene.tweens.add({
                 targets: this,
@@ -211,7 +221,7 @@ class Player1 extends Phaser.GameObjects.Image{
                 paused: false
             })
 
-            if(this.bullets.getLength()<10){
+            if(this.bullets.getLength()<3){
                 this.bullets.add(
                     new Bullet({
                         scene: this.scene,
@@ -250,6 +260,16 @@ class Player1 extends Phaser.GameObjects.Image{
     }
 }
 
+var p2_rotate_tank = false;
+var p2_rotateTankLeft = false;
+var p2_rotateTankRight = false;
+var p2_rotateTurretLeft = false;
+var p2_rotateTurretRight = false;
+var p2_forward = false;
+var p2_backward = false;
+var p2_shoot = false;
+var p2_displayText
+
 class Player2 extends Phaser.GameObjects.Image{
     constructor(props){
         super(props.scene, props.x, props.y, props.key, props.frame)
@@ -261,12 +281,13 @@ class Player2 extends Phaser.GameObjects.Image{
         //child
         this.barrel = Phaser.GameObjects.Image
         this.lifeBar = Phaser.GameObjects.Graphics
+        this.yell = Phaser.GameObjects.text
         //game object
         this.bullets = Phaser.GameObjects.Group
         //input - edit this type later for bot
         this.cursors = Phaser.Input.Keyboard.CursorKeys
-        this.rotateKeyLeft = Phaser.Input.Keyboard.Key
-        this.rotateKeyRight = Phaser.Input.Keyboard.Key
+        this.rotateTurretLeft = Phaser.Input.Keyboard.Key
+        this.rotateTurretRight = Phaser.Input.Keyboard.Key
         this.shootingKey = Phaser.Input.Keyboard.Key
         this.rotateTankLeft = Phaser.Input.Keyboard.Key
         this.rotateTankRight = Phaser.Input.Keyboard.Key
@@ -299,6 +320,8 @@ class Player2 extends Phaser.GameObjects.Image{
         this.barrel.setOrigin(0.5, 1)
         this.barrel.setDepth(1)
         this.barrel.angle = 180
+        this.yell = this.scene.add.text(this.x, this.y, '', { fontSize: '12px', fill: '#000' })
+        this.yell.setOrigin(-0.5, 3.2)
 
         this.lifeBar = this.scene.add.graphics()
         this.redrawLifebar()
@@ -312,10 +335,10 @@ class Player2 extends Phaser.GameObjects.Image{
 
         //input
         this.cursors = this.scene.input.keyboard.createCursorKeys()
-        this.rotateKeyLeft = this.scene.input.keyboard.addKey(
+        this.rotateTurretLeft = this.scene.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE
         )
-        this.rotateKeyRight = this.scene.input.keyboard.addKey(
+        this.rotateTurretRight = this.scene.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO
         )
         this.shootingKey = this.scene.input.keyboard.addKey(
@@ -344,6 +367,8 @@ class Player2 extends Phaser.GameObjects.Image{
           this.barrel.y = this.y
           this.lifeBar.x = this.x
           this.lifeBar.y = this.y
+          this.yell.x = this.x
+          this.yell.y = this.y
           this.handleInput()
           this.handleShooting()  
         }else{
@@ -354,14 +379,14 @@ class Player2 extends Phaser.GameObjects.Image{
     }
 
     handleInput(){
-        // move forward & backward then stop
-        if(this.tankForward.isDown){
+        //move forward & backward then stop
+        if(this.tankForward.isDown || p2_forward){
             this.scene.physics.velocityFromRotation(
                 this.rotation - Math.PI / 2,
                 this.speed,
                 this.body.velocity 
             )
-        }else if(this.tankBackward.isDown){
+        }else if(this.tankBackward.isDown || p2_backward){
             this.scene.physics.velocityFromRotation(
                 this.rotation - Math.PI / 2,
                 -this.speed,
@@ -371,21 +396,21 @@ class Player2 extends Phaser.GameObjects.Image{
             this.body.setVelocity(0, 0)
         }
         //Rotate tank
-        if(this.rotateTankLeft.isDown){
-            this.rotation -= 0.02
-        }else if(this.rotateTankRight.isDown){
-            this.rotation += 0.02
+        if(this.rotateTankLeft.isDown || p2_rotateTankLeft){
+            this.angle -= 1
+        }else if(this.rotateTankRight.isDown || p2_rotateTankRight){
+            this.angle += 1
         }
         //Rotate barrel
-        if(this.rotateKeyLeft.isDown){
-            this.barrel.rotation -= 0.05
-        }else if(this.rotateKeyRight.isDown){
-            this.barrel.rotation += 0.05
+        if(this.rotateTurretLeft.isDown || p2_rotateTurretLeft){
+            this.barrel.angle -= 1
+        }else if(this.rotateTurretRight.isDown || p2_rotateTurretRight){
+            this.barrel.angle += 1
         }
     }
 
     handleShooting(){
-        if(this.shootingKey.isDown && this.scene.time.now > this.lastShoot){
+        if((this.shootingKey.isDown || p2_shoot) && this.scene.time.now > this.lastShoot){
             this.scene.cameras.main.shake(20, 0.005)
             this.scene.tweens.add({
                 targets: this,
@@ -543,8 +568,8 @@ class GameplayScene extends Phaser.Scene{
     }
 
     create(){
-        this.textLog1 = this.add.text(10,40,'',{font:'16px Courier', fill: '#00ff00'})
-        this.textLog2 = this.add.text(10,520,'',{font:'16px Courier', fill: '#f442ad'})
+        this.textLog1 = this.add.text(30,30,'',{font:'16px Courier', fill: '#00ff00'})
+        this.textLog2 = this.add.text(30,390,'',{font:'16px Courier', fill: '#f442ad'})
 
         this.wall = this.add.group({
             /*classType: Obstacle,*/
@@ -595,10 +620,15 @@ class GameplayScene extends Phaser.Scene{
 
     update(){
         this.textLog1.setText('tank1 Y : '+parseInt(this.blueSide.y) +' tank1 X : '+parseInt(this.blueSide.x)+'\n'
-        +'tank1 angle : '+ parseInt(this.blueSide.angle)+'\n'+'turret1 angle : '+parseInt(this.blueSide.angle))
+        +'tank1 angle : '+ parseInt(this.blueSide.angle)+'\n'+'turret1 angle : '+parseInt(this.blueSide.barrel.angle)
+        +'\n'+'health : '+(this.blueSide.health * 100))
 
         this.textLog2.setText('tank2 Y : '+parseInt(this.redSide.y) +' tank2 X : '+parseInt(this.redSide.x)+'\n'
-        +'tank2 angle : '+ parseInt(this.redSide.angle)+'\n'+'turret2 angle : '+parseInt(this.redSide.angle))
+        +'tank2 angle : '+ parseInt(this.redSide.angle)+'\n'+'turret2 angle : '+parseInt(this.redSide.barrel.angle)
+        +'\n'+'health : '+(this.redSide.health * 100))
+
+        this.blueSide.yell.setText(p1_displayText)
+        this.redSide.yell.setText(p2_displayText)
 
         this.redSide.update()
         this.blueSide.update()
@@ -607,15 +637,15 @@ class GameplayScene extends Phaser.Scene{
     convertObjects(){
         this.redSide = new Player2({
             scene: this,
-            x: 200,
-            y: 200,
+            x: 400,
+            y: 240,
             key: "tankRed"
         })
 
         this.blueSide = new Player1({
             scene: this,
-            x: 400,
-            y: 400,
+            x: 200,
+            y: 240,
             key: "tankBlue"
         })
 
@@ -623,11 +653,11 @@ class GameplayScene extends Phaser.Scene{
             if(j == 0 || j == 1){
                 let xPos
                 if( j == 0){
-                    xPos = 5
+                    xPos = 0
                 }else{
-                    xPos = 765
+                    xPos = 570
                 }
-                for(let i = 0; i<20;i++){
+                for(let i = 0; i<16;i++){
                     let obstacle = new Obstacle({
                         scene: this,
                         x: xPos,
@@ -642,12 +672,12 @@ class GameplayScene extends Phaser.Scene{
                 if( j == 2){
                     yPos = 0
                 }else{
-                    yPos = 569
+                    yPos = 449
                 }
-                for(let i = 0; i<25;i++){
+                for(let i = 0; i<18;i++){
                     let obstacle = new Obstacle({
                         scene: this,
-                        x: (30*i)+35,
+                        x: (30*i)+30,
                         y: yPos,
                         key: "object.type"
                     });
