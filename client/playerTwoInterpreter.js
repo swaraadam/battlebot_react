@@ -15,6 +15,8 @@ var playerTwoInterpreter = Blockly.inject('workspacePlayerTwo',
 
     Blockly.JavaScript.addReservedWords('exit');
 
+    var xmlAreaP2 = document.getElementById('XMLP2')
+
     var outputAreaP2 = document.getElementById('outputP2');
     var runButtonP2 = document.getElementById('runButtonP2');
     var myInterpreterP2 = null;
@@ -64,9 +66,82 @@ var playerTwoInterpreter = Blockly.inject('workspacePlayerTwo',
       // initInterpreterGoRight(interpreter, scope);
       // initInterpreterGoLeft(interpreter, scope);
       // initInterpreterDisplayText(interpreter, scope);
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(get_player_pos_y_p2());
+      };
+      interpreter.setProperty(scope, 'get_player_pos_y',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(get_player_pos_x_p2());
+      };
+      interpreter.setProperty(scope, 'get_player_pos_x',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(get_player_health_p2());
+      };
+      interpreter.setProperty(scope, 'get_player_health',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(get_player_tank_angle_p2());
+      };
+      interpreter.setProperty(scope, 'get_player_tank_angle',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(get_player_turret_angle_p2());
+      };
+      interpreter.setProperty(scope, 'get_player_turret_angle',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(get_enemy_pos_y_p2());
+      };
+      interpreter.setProperty(scope, 'get_enemy_pos_y',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(get_enemy_pos_x_p2());
+      };
+      interpreter.setProperty(scope, 'get_enemy_pos_x',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(get_enemy_health_p2());
+      };
+      interpreter.setProperty(scope, 'get_enemy_health',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(get_enemy_status_p2());
+      };
+      interpreter.setProperty(scope, 'get_enemy_status',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(is_colliding_with_enemy_p2());
+      };
+      interpreter.setProperty(scope, 'is_colliding_with_enemy',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(is_colliding_with_wall_p2());
+      };
+      interpreter.setProperty(scope, 'is_colliding_with_wall',
+          interpreter.createNativeFunction(wrapper));
+
+      var wrapper = function() {
+        return interpreter.createPrimitive(is_hit_by_enemy_p2());
+      };
+      interpreter.setProperty(scope, 'is_hit_by_enemy',
+          interpreter.createNativeFunction(wrapper));
+
       var wrapper = function (id) {
         id = id ? id.toString() : '';
-        return interpreter.createPrimitive(highlightBlockP2(id));
+        return interpreter.createPrimitive(highlightBlockP2_p2(id));
       };
       interpreter.setProperty(scope, 'highlightBlockP2',
         interpreter.createNativeFunction(wrapper));
@@ -78,10 +153,51 @@ var playerTwoInterpreter = Blockly.inject('workspacePlayerTwo',
       };
       interpreter.setProperty(scope, 'bb',
         interpreter.createNativeFunction(wrapper));
+
+    ///////////////////////////////////////////////////////// function
+      function get_player_pos_y_p2(){
+        return redSide_.y
+      }
+      function get_player_pos_x_p2(){
+        return redSide_.x
+      }
+
+      function get_player_health_p2(){
+        return redSide_.health
+      }
+
+      function get_player_tank_angle_p2(){
+        return redSide_.angle
+      }
+
+      function get_player_turret_angle_p2(){
+        return redSide_.barrel.angle
+      }
+
+      function get_enemy_health_p2(){
+        return blueSide_.health
+      }
+
+      function get_enemy_status_p2(){
+        return blueSide_.active
+      }
+
+      function is_colliding_with_enemy_p2(){
+        return collideEachOther_
+      }
+
+      function is_colliding_with_wall_p2(){
+        return blueCollideWall_
+      }
+
+      function is_hit_by_enemy_p2(){
+        return blueHitByRed_
+      }
     }
 
     var highlightPauseP2 = false;
     var latestCodeP2 = '';
+    var xmlP2 ='';
 
     function highlightBlockP2(id) {
       playerTwoInterpreter.highlightBlockP2(id);
@@ -95,6 +211,7 @@ var playerTwoInterpreter = Blockly.inject('workspacePlayerTwo',
 
       if (clearOutput) {
         outputAreaP2.value = latestCodeP2;
+        xmlAreaP2.value = Blockly.Xml.domToText(xmlP2);
       }
     }
 
@@ -103,7 +220,7 @@ var playerTwoInterpreter = Blockly.inject('workspacePlayerTwo',
     //   Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlockP2(%1);\n';
     //   Blockly.JavaScript.addReservedWords('highlightBlockP2');
       latestCodeP2 = Blockly.JavaScript.workspaceToCode(playerTwoInterpreter);
-
+      xmlP2 = Blockly.Xml.workspaceToDom(playerTwoInterpreter);
       resetStepUiP2(true);
     }
 

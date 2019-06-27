@@ -4,7 +4,7 @@
   "description": "\"reactJS, Phaser, Blockly for Battlebot\"",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/swaraadam/battlebot_react#readme",
   "dependencies": {
+    "nodemon": "^1.19.1",
     "phaser": "^3.17.0"
   },
   "devDependencies": {

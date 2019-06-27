@@ -13,8 +13,6 @@
     }
   };
 
-  
-
   Blockly.Blocks['rotate_tank_to_right_p1'] = {
     init: function() {
       this.appendDummyInput()
@@ -154,3 +152,148 @@
    this.setHelpUrl("");
     }
   };
+
+  Blockly.Blocks['tank_value_of_y'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("value of y");
+	    this.setOutput(true, "Number");
+	    this.setColour(165);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['tank_value_of_x'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("value of x");
+	    this.setOutput(true, "Number");
+	    this.setColour(165);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['tank_value_of_health'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("value of health");
+	    this.setOutput(true, "Number");
+	    this.setColour(165);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['tank_value_of_angle'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("value of tank angle");
+	    this.setOutput(true, "Number");
+	    this.setColour(165);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['turret_value_of_angle'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("value of turret angle");
+	    this.setOutput(true, "Number");
+	    this.setColour(165);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['enemy_value_of_y'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("value of y");
+	    this.setOutput(true, "Number");
+	    this.setColour(0);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['enemy_value_of_x'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("value of x");
+	    this.setOutput(true, "Number");
+	    this.setColour(0);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['enemy_value_of_health'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("enemy health");
+	    this.setOutput(true, "Number");
+	    this.setColour(0);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['is_enemy_live'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("is enemy live");
+	    this.setOutput(true, "Boolean");
+	    this.setColour(0);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['is_colliding_with_enemy'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("is colliding with enemy");
+	    this.setOutput(true, "Boolean");
+	    this.setColour(0);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['is_colliding_with_wall'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("is colliding with wall");
+	    this.setOutput(true, "Boolean");
+	    this.setColour(0);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+
+  Blockly.Blocks['is_hit_by_enemy'] = {
+	  init: function() {
+	    this.appendDummyInput()
+	        .appendField("is hit by enemy");
+	    this.setOutput(true, "Boolean");
+	    this.setColour(0);
+	    this.setTooltip('');
+	    this.setHelpUrl('http://www.example.com/');
+		//oncgange Javascript generation
+	  }
+  };
+  

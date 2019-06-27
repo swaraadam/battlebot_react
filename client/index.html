@@ -90,19 +90,29 @@ h1 {
       <td><div id="workspacePlayerTwo"></div></td>
     </tr>
     <tr>
-        <td>   
-          <textarea id="outputP1" disabled="disabled" style="display: inline-block; height: 120px; width: 100%;">
-          </textarea>
-        </td>
-        <td>
-          <textarea id="outputP2" disabled="disabled" style="display: inline-block; height: 120px; width: 100%;">
-          </textarea>
-        </td>
-      </tr>
+      <td>   
+        <textarea id="outputP1" disabled="disabled" style="display: inline-block; height: 120px; width: 100%;">
+        </textarea>
+      </td>
+      <td>
+        <textarea id="outputP2" disabled="disabled" style="display: inline-block; height: 120px; width: 100%;">
+        </textarea>
+      </td>
+    </tr>
+    <tr>
+      <td>   
+        <textarea id="XMLP1" disabled="disabled" style="display: inline-block; height: 120px; width: 100%;">
+        </textarea>
+      </td>
+      <td>
+        <textarea id="XMLP2" disabled="disabled" style="display: inline-block; height: 120px; width: 100%;">
+        </textarea>
+      </td>
+    </tr>
   </table>
 
   <xml id="toolbox-p1" style="display: none">
-    <category name="Tank Attribute" colour="#ffe500">
+    <category name="Tank Action" colour="#ffe500">
       <block type="rotate_tank_p1"></block>
       <!-- <block type="rotate_tank_to_left"></block>
       <block type="rotate_tank_to_right"></block> -->
@@ -111,10 +121,29 @@ h1 {
       <block type="rotate_turret_to_right"></block> -->
       <block type="move_forward_p1"></block>
       <block type="move_backward_p1"></block>
-      <block type="move_opposide_p1"></block>
+      <!-- <block type="move_opposide_p1"></block> -->
       <block type="shoot_p1"></block>
       <block type="yell_p1"></block>
     </category>
+    <category name="Tank Attribute" colour="#3cf2e0">
+      <block type="tank_value_of_x"></block>
+      <block type="tank_value_of_y"></block>
+      <block type="tank_value_of_angle"></block>
+      <block type="turret_value_of_angle"></block>
+      <block type="tank_value_of_health"></block>
+    </category>
+    <category name="Enemy Attribute" colour="#ef1390">
+      <block type="enemy_value_of_x"></block>
+      <block type="enemy_value_of_y"></block>
+      <block type="enemy_value_of_health"></block>
+      <block type="is_enemy_live"></block>
+    </category>
+    <category name="Tank Condition" colour=#ff6d19>
+      <block type="is_colliding_with_enemy"></block>
+      <block type="is_colliding_with_wall"></block>
+      <block type="is_hit_by_enemy"></block>
+    </category>
+    <sep></sep>
     <category name="Logic" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
@@ -427,7 +456,7 @@ h1 {
   </xml>
 
   <xml id="toolbox-p2" style="display: none">
-    <category name="Tank Attribute" colour="#ffe500">
+    <category name="Tank Action" colour="#ffe500">
       <block type="rotate_tank_p2"></block>
       <!-- <block type="rotate_tank_to_left"></block>
       <block type="rotate_tank_to_right"></block> -->
@@ -436,10 +465,29 @@ h1 {
       <block type="rotate_turret_to_right"></block> -->
       <block type="move_forward_p2"></block>
       <block type="move_backward_p2"></block>
-      <block type="move_opposide_p2"></block>
+      <!-- <block type="move_opposide_p2"></block> -->
       <block type="shoot_p2"></block>
       <block type="yell_p2"></block>
     </category>
+    <category name="Tank Attribute" colour="#3cf2e0">
+      <block type="tank_value_of_x_p2"></block>
+      <block type="tank_value_of_y_p2"></block>
+      <block type="tank_value_of_angle_p2"></block>
+      <block type="tank_value_of_health_p2"></block>
+      <block type="turret_value_of_angle_p2"></block>
+    </category>
+    <category name="Enemy Attribute" colour="#ef1390">
+      <block type="enemy_value_of_x"></block>
+      <block type="enemy_value_of_y"></block>
+      <block type="enemy_value_of_health_p2"></block>
+      <block type="is_enemy_live_p2"></block>
+    </category>
+    <category name="Tank Condition" colour=#ff6d19>
+      <block type="is_colliding_with_enemy"></block>
+      <block type="is_colliding_with_wall"></block>
+      <block type="is_hit_by_enemy"></block>
+    </category>
+    <sep></sep>
     <category name="Logic" colour="%{BKY_LOGIC_HUE}">
       <block type="controls_if"></block>
       <block type="logic_compare"></block>

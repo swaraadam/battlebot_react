@@ -62,7 +62,7 @@ var p1_rotateTurretRight = false;
 var p1_forward = false;
 var p1_backward = false;
 var p1_shoot = false;
-var p1_displayText
+var p1_displayText;
 
 class Player1 extends Phaser.GameObjects.Image{
     constructor(props){
@@ -127,29 +127,29 @@ class Player1 extends Phaser.GameObjects.Image{
             runChildUpdate: true
         })
 
-        //input
+        // //input
         this.cursors = this.scene.input.keyboard.createCursorKeys()
-        this.rotateTurretLeft = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.Q
-        )
-        this.rotateTurretRight = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.E
-        )
+        // this.rotateTurretLeft = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.Q
+        // )
+        // this.rotateTurretRight = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.E
+        // )
         this.shootingKey = this.scene.input.keyboard.addKey(
             Phaser.Input.Keyboard.KeyCodes.ALT
         )
-        this.rotateTankLeft = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.A
-        )
-        this.rotateTankRight = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.D
-        )
-        this.tankForward = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.W
-        )
-        this.tankBackward = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.S
-        )
+        // this.rotateTankLeft = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.A
+        // )
+        // this.rotateTankRight = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.D
+        // )
+        // this.tankForward = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.W
+        // )
+        // this.tankBackward = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.S
+        // )
 
         //physics
         this.scene.physics.world.enable(this)
@@ -221,7 +221,7 @@ class Player1 extends Phaser.GameObjects.Image{
                 paused: false
             })
 
-            if(this.bullets.getLength()<3){
+            if(this.bullets.getLength()<1){
                 this.bullets.add(
                     new Bullet({
                         scene: this.scene,
@@ -268,7 +268,7 @@ var p2_rotateTurretRight = false;
 var p2_forward = false;
 var p2_backward = false;
 var p2_shoot = false;
-var p2_displayText
+var p2_displayText;
 
 class Player2 extends Phaser.GameObjects.Image{
     constructor(props){
@@ -333,29 +333,29 @@ class Player2 extends Phaser.GameObjects.Image{
             runChildUpdate: true
         })
 
-        //input
-        this.cursors = this.scene.input.keyboard.createCursorKeys()
-        this.rotateTurretLeft = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE
-        )
-        this.rotateTurretRight = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO
-        )
-        this.shootingKey = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO
-        )
-        this.rotateTankLeft = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.LEFT
-        )
-        this.rotateTankRight = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.RIGHT
-        )
-        this.tankForward = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.UP
-        )
-        this.tankBackward = this.scene.input.keyboard.addKey(
-            Phaser.Input.Keyboard.KeyCodes.DOWN
-        )
+        // //input
+        // this.cursors = this.scene.input.keyboard.createCursorKeys()
+        // this.rotateTurretLeft = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE
+        // )
+        // this.rotateTurretRight = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO
+        // )
+        // this.shootingKey = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.NUMPAD_ZERO
+        // )
+        // this.rotateTankLeft = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.LEFT
+        // )
+        // this.rotateTankRight = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.RIGHT
+        // )
+        // this.tankForward = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.UP
+        // )
+        // this.tankBackward = this.scene.input.keyboard.addKey(
+        //     Phaser.Input.Keyboard.KeyCodes.DOWN
+        // )
 
         //physics
         this.scene.physics.world.enable(this)
@@ -426,7 +426,7 @@ class Player2 extends Phaser.GameObjects.Image{
                 paused: false
             })
 
-            if(this.bullets.getLength()<10){
+            if(this.bullets.getLength()<1){
                 this.bullets.add(
                     new Bullet({
                         scene: this.scene,
@@ -498,7 +498,7 @@ class BootScene extends Phaser.Scene{
     }
 
     preload(){
-        console.log("BootScene")
+        // console.log("BootScene")
         // this.scene.start("MenuScene")
         this.cameras.main.setBackgroundColor(0x000000)
         this.createLoadingGraphics()
@@ -548,6 +548,14 @@ class BootScene extends Phaser.Scene{
     }
 }
 
+var redSide_
+var blueSide_
+var collideEachOther_
+var blueCollideWall_
+var blueHitByRed_
+var redCollideWall_
+var redHitByBlue_
+
 class GameplayScene extends Phaser.Scene{
 
     constructor(){
@@ -571,18 +579,41 @@ class GameplayScene extends Phaser.Scene{
         this.textLog1 = this.add.text(30,30,'',{font:'16px Courier', fill: '#00ff00'})
         this.textLog2 = this.add.text(30,390,'',{font:'16px Courier', fill: '#f442ad'})
 
+        collideEachOther_ = false
+        blueCollideWall_ = false
+        blueHitByRed_ = false
+        redCollideWall_ = false
+        redHitByBlue_ = false
+
         this.wall = this.add.group({
             /*classType: Obstacle,*/
             runChildUpdate: true
           });
 
         //set collider for player
-        
         this.convertObjects()
         
-        this.physics.add.collider(this.redSide, this.blueSide)
-        this.physics.add.collider(this.redSide, this.wall)
-        this.physics.add.collider(this.blueSide, this.wall)
+        this.physics.add.collider(
+            this.blueSide,
+            this.redSide,
+            this.blueHitRed,
+            null,
+            this
+        )
+        this.physics.add.collider(
+            this.redSide,
+            this.wall,
+            this.redHitWall,
+            null,
+            this
+        )
+        this.physics.add.collider(
+            this.blueSide, 
+            this.wall,
+            this.blueHitWall,
+            null,
+            this
+        )
 
         //set collider for bullets
         this.physics.add.overlap(
@@ -619,6 +650,7 @@ class GameplayScene extends Phaser.Scene{
     }
 
     update(){
+
         this.textLog1.setText('tank1 Y : '+parseInt(this.blueSide.y) +' tank1 X : '+parseInt(this.blueSide.x)+'\n'
         +'tank1 angle : '+ parseInt(this.blueSide.angle)+'\n'+'turret1 angle : '+parseInt(this.blueSide.barrel.angle)
         +'\n'+'health : '+(this.blueSide.health * 100))
@@ -626,6 +658,9 @@ class GameplayScene extends Phaser.Scene{
         this.textLog2.setText('tank2 Y : '+parseInt(this.redSide.y) +' tank2 X : '+parseInt(this.redSide.x)+'\n'
         +'tank2 angle : '+ parseInt(this.redSide.angle)+'\n'+'turret2 angle : '+parseInt(this.redSide.barrel.angle)
         +'\n'+'health : '+(this.redSide.health * 100))
+
+        redSide_ = this.redSide
+        blueSide_ = this.blueSide
 
         this.blueSide.yell.setText(p1_displayText)
         this.redSide.yell.setText(p2_displayText)
@@ -688,14 +723,43 @@ class GameplayScene extends Phaser.Scene{
         }
     }
 
+    blueHitRed(blueSide,redSide){
+        collideEachOther_ = true
+        setTimeout(function(){
+            collideEachOther_ = false; 
+        },10)
+    }
+
     redBulletHitBlue(bullet, blueSide){
         bullet.destroy()
         blueSide.updateHealth()
+        blueHitByRed_ = true
+        setTimeout(function(){
+            blueHitByRed_ = false; 
+        },10)
     }
 
     blueBulletHitRed(bullet, redSide){
         bullet.destroy()
         redSide.updateHealth()
+        redHitByBlue_ = true
+        setTimeout(function(){
+            redHitByBlue_ = false; 
+        },10)
+    }
+
+    redHitWall(redSide, wall){
+        redCollideWall_ = true
+        setTimeout(function(){
+            redCollideWall_ = false; 
+        },10)
+    }
+
+    blueHitWall(blueSide, wall){
+        blueCollideWall_=true
+        setTimeout(function(){
+            blueCollideWall_ = false;
+        })
     }
 
     redBulletHitWall(bullet, wall){
@@ -706,3 +770,4 @@ class GameplayScene extends Phaser.Scene{
         bullet.destroy()
     }
 }
+

@@ -186,3 +186,99 @@ function initInterpreterYellP1(interpreter, scope) {
     });
   interpreter.setProperty(scope, 'yell', wrapper);
 }
+
+Blockly.JavaScript['tank_value_of_y'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "parseInt(get_player_pos_y())";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['tank_value_of_x'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "parseInt(get_player_pos_x())";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['tank_value_of_health'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "parseInt(get_player_health())";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['tank_value_of_angle'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "parseInt(get_player_tank_angle())";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['turret_value_of_angle'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "parseInt(get_player_turret_angle())";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['enemy_value_of_y'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "parseInt(get_enemy_pos_y())";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['enemy_value_of_x'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "parseInt(get_enemy_pos_x())";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['enemy_value_of_health'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "parseInt(get_enemy_health())";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['is_enemy_live'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "get_enemy_status()";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['is_colliding_with_enemy'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "is_colliding_with_enemy()";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['is_colliding_with_wall'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "is_colliding_with_wall()";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
+
+Blockly.JavaScript['is_hit_by_enemy'] = function(block) {
+  // TODO: Assemble JavaScript into code variable.
+  var code = "is_hit_by_enemy()";
+  // TODO: Change ORDER_NONE to the correct strength.
+  //return [code, Blockly.JavaScript.ORDER_NONE];
+  return [code, Blockly.JavaScript.ORDER_ATOMIC];
+};
