@@ -58,8 +58,8 @@ h1 {
       <th>
           <p>
               <button class="button-success pure-button" onclick="runCodeP1()" id="runButtonP1">Run Player One</button>
-              <input type="text" id="savedFile" class="filename" value="file.txt"/>
-              <button class="button-success pure-button" onclick="saveBlockP1(savedFile.value)" id="saveButtonP1">Export Block</button>
+              <input type="text" id="savedFileP1" class="filename" value="file.txt"/>
+              <button class="button-success pure-button" onclick="saveBlockP1(savedFileP1.value)" id="saveButtonP1">Export Block</button>
               <button class="button-success pure-button" onclick="importBlocksP1()">Import Blocks(XML)</button>
               <input class="button-success pure-button" id="myfile" type="file" onchange ="importBlocksXMLP1(this);" accept=".txt,.xml">
             </p>
@@ -67,8 +67,8 @@ h1 {
       <th>
           <p>
               <button class="button-success pure-button" onclick="runCodeP2()" id="runButtonP2">Run Player Two</button>
-              <input type="text" id="savedFile" class="filename" value="file.txt"/>
-              <button class="button-success pure-button" onclick="saveBlockP2(savedFile.value)" id="saveButtonP2">Export Block</button>
+              <input type="text" id="savedFileP2" class="filename" value="file.txt"/>
+              <button class="button-success pure-button" onclick="saveBlockP2(savedFileP2.value)" id="saveButtonP2">Export Block</button>
               <button class="button-success pure-button" onclick="importBlocksP2()">Import Blocks(XML)</button>
               <input class="button-success pure-button" id="myfile" type="file" onchange ="importBlocksXMLP2(this);" accept=".txt,.xml">
             </p>

@@ -275,30 +275,30 @@ var playerOneInterpreter = Blockly.inject('workspacePlayerOne',
       }
     }
     //create block saver
-    var xml_text = null
+    var xml_text_p1 = null
     function saveBlockP1(filename){
       try{
         var xml = Blockly.Xml.workspaceToDom(playerOneInterpreter)
-        xml_text = Blockly.Xml.domToText(xml)
+        xml_text_p1 = Blockly.Xml.domToText(xml)
 
         var link = document.createElement('a')
         link.download = filename
-        link.href = "data:application/octet-stream;utf-8," + encodeURI(xml_text)
+        link.href = "data:application/octet-stream;utf-8," + encodeURI(xml_text_p1)
         document.body.appendChild(link)
         link.click()
         link.remove()
         console.log("save success")
       }catch(e){
         console.log(e)
-        window.location.href = "data:application/octet-stream;utf-8," + encodeURI(xml_text)
+        window.location.href = "data:application/octet-stream;utf-8," + encodeURI(xml_text_p1)
         alert(e)
       }
     }
 
     function importBlocksP1(){
       try{
-        var xml_text = prompt("Please enter XML code","")
-        var xml = Blockly.Xml.textToDom(xml_text)
+        var xml_text_p1 = prompt("Please enter XML code","")
+        var xml = Blockly.Xml.textToDom(xml_text_p1)
         playerOneInterpreter.clear()
         Blockly.Xml.domToWorkspace(xml,playerOneInterpreter)
       }catch(e){
